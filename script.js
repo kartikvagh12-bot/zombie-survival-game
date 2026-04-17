@@ -34,7 +34,7 @@
 
   const keys = {};
   const joystick = { active: false, id: null, baseX: 0, baseY: 0, dx: 0, dy: 0, max: 50 };
-  const shootTouch = { active: false, id: null };
+  const shootTouch = { active: false, id: null, x: 0, y: 0 };
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -184,13 +184,14 @@
     player.x = Math.max(player.r, Math.min(W - player.r, player.x));
     player.y = Math.max(player.r, Math.min(H - player.r, player.y));
 
-    // Aim
-    if (isTouch) {
-      if (joystick.active && (Math.abs(joystick.dx) > 2 || Math.abs(joystick.dy) > 2)) {
-        player.angle = Math.atan2(joystick.dy, joystick.dx);
-      }
-    } else {
+    // Aim — touch (right-side virtual cursor) takes priority on mobile;
+    // desktop always uses mouse. Fallback: joystick direction while moving.
+    if (shootTouch.active) {
+      player.angle = Math.atan2(shootTouch.y - player.y, shootTouch.x - player.x);
+    } else if (!isTouch) {
       player.angle = Math.atan2(mouseY - player.y, mouseX - player.x);
+    } else if (joystick.active && (Math.abs(joystick.dx) > 2 || Math.abs(joystick.dy) > 2)) {
+      player.angle = Math.atan2(joystick.dy, joystick.dx);
     }
 
     // Shoot
@@ -458,11 +459,30 @@
   joystickEl.addEventListener("touchend", joystickEnd);
   joystickEl.addEventListener("touchcancel", joystickEnd);
 
+  function touchToCanvas(t) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: t.clientX - rect.left,
+      y: t.clientY - rect.top
+    };
+  }
   function shootStart(e) {
     const t = e.changedTouches[0];
+    const pos = touchToCanvas(t);
     shootTouch.active = true;
     shootTouch.id = t.identifier;
+    shootTouch.x = pos.x;
+    shootTouch.y = pos.y;
     e.preventDefault();
+  }
+  function shootMove(e) {
+    for (const t of e.changedTouches) {
+      if (t.identifier !== shootTouch.id) continue;
+      const pos = touchToCanvas(t);
+      shootTouch.x = pos.x;
+      shootTouch.y = pos.y;
+      e.preventDefault();
+    }
   }
   function shootEnd(e) {
     for (const t of e.changedTouches) {
@@ -472,6 +492,7 @@
     }
   }
   shootZone.addEventListener("touchstart", shootStart, { passive: false });
+  shootZone.addEventListener("touchmove", shootMove, { passive: false });
   shootZone.addEventListener("touchend", shootEnd);
   shootZone.addEventListener("touchcancel", shootEnd);
 
