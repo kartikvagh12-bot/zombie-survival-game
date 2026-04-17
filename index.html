@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>Zombie Survival Shooter</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="gameContainer">
+  <canvas id="game"></canvas>
+
+  <div id="hud">
+    <div id="scoreBox">
+      <div class="hudLabel">SCORE</div>
+      <div id="score">0</div>
+    </div>
+    <div id="waveBox">
+      <div class="hudLabel">WAVE</div>
+      <div id="wave">1</div>
+    </div>
+    <div id="healthBox">
+      <div class="hudLabel">HEALTH</div>
+      <div id="healthBarOuter"><div id="healthBarInner"></div></div>
+    </div>
+  </div>
+
+  <div id="joystick" class="touchOnly">
+    <div id="joystickBase"><div id="joystickStick"></div></div>
+  </div>
+  <div id="shootZone" class="touchOnly">
+    <div id="shootHint">TAP / HOLD<br />TO SHOOT</div>
+  </div>
+
+  <div id="startOverlay" class="overlay">
+    <h1>ZOMBIE SURVIVAL</h1>
+    <p class="desktopOnly">WASD to move &middot; Mouse to aim &middot; Click to shoot</p>
+    <p class="touchOnly">Left joystick to move &middot; Tap right side to shoot</p>
+    <button id="startBtn">START</button>
+  </div>
+
+  <div id="gameOverOverlay" class="overlay hidden">
+    <h1>GAME OVER</h1>
+    <p>Score: <span id="finalScore">0</span></p>
+    <p>Wave: <span id="finalWave">1</span></p>
+    <button id="restartBtn">RESTART</button>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

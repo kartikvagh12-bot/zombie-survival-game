@@ -1,0 +1,216 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0a0a0a;
+  font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+  color: #eaeaea;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
+#gameContainer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: #111;
+  touch-action: none;
+}
+
+/* HUD */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 5;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hudLabel {
+  font-size: 10px;
+  opacity: 0.7;
+  letter-spacing: 2px;
+}
+
+#scoreBox, #waveBox {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  min-width: 72px;
+  text-align: center;
+}
+
+#score, #wave {
+  font-size: 22px;
+  color: #ffd24a;
+}
+
+#wave { color: #ff6b6b; }
+
+#healthBox {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  min-width: 160px;
+}
+
+#healthBarOuter {
+  width: 100%;
+  height: 14px;
+  background: #1f1f1f;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 4px;
+  border: 1px solid #2a2a2a;
+}
+
+#healthBarInner {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #3ddc84, #ffd24a 60%, #ff4b4b);
+  transition: width 0.15s linear;
+}
+
+/* Touch controls */
+.touchOnly { display: none; }
+
+#joystick {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 140px;
+  height: 140px;
+  z-index: 6;
+  touch-action: none;
+}
+
+#joystickBase {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+#joystickStick {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+#shootZone {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 45%;
+  height: 55%;
+  z-index: 6;
+  touch-action: none;
+}
+
+#shootHint {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  padding: 10px 14px;
+  background: rgba(255, 75, 75, 0.15);
+  border: 2px solid rgba(255, 75, 75, 0.5);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #ffb0b0;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+  z-index: 10;
+}
+
+.overlay.hidden { display: none; }
+
+.overlay h1 {
+  font-size: clamp(28px, 6vw, 54px);
+  color: #ff4b4b;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(255, 75, 75, 0.6);
+}
+
+.overlay p {
+  font-size: clamp(13px, 2.2vw, 16px);
+  opacity: 0.85;
+  max-width: 480px;
+}
+
+.overlay button {
+  margin-top: 8px;
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: #ff4b4b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 75, 75, 0.35);
+  transition: transform 0.1s, background 0.2s;
+}
+
+.overlay button:active { transform: scale(0.96); }
+.overlay button:hover { background: #ff6b6b; }
+
+/* Responsive — show/hide control hints */
+@media (hover: none) and (pointer: coarse) {
+  .touchOnly { display: block; }
+  .desktopOnly { display: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .touchOnly { display: none !important; }
+  .desktopOnly { display: block; }
+}
